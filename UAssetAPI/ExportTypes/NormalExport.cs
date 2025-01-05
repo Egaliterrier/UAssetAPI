@@ -158,6 +158,8 @@ namespace UAssetAPI.ExportTypes
 
         public override void Write(AssetBinaryWriter writer)
         {
+            writer.Write(0); //UE5.4 fix (works for some things, might break others)
+            
             FName parentName = GetClassTypeForAncestry(writer.Asset, out FName parentModulePath);
 
             MainSerializer.GenerateUnversionedHeader(ref Data, parentName, parentModulePath, writer.Asset)?.Write(writer);
