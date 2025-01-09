@@ -158,7 +158,12 @@ namespace UAssetAPI.ExportTypes
 
         public override void Write(AssetBinaryWriter writer)
         {
-            writer.Write(0); //UE5.4 fix (works for some things, might break others)
+            //UE5.4 fix - credits to hypermodule (https://github.com/atenfyr/UAssetAPI/issues/98)
+            if (writer.Asset.ObjectVersionUE5 >= ObjectVersionUE5.PROPERTY_TAG_COMPLETE_TYPE_NAME &&
+                !ObjectFlags.HasFlag(EObjectFlags.RF_ClassDefaultObject))
+            {
+                writer.Write((int)0);
+            }
             
             FName parentName = GetClassTypeForAncestry(writer.Asset, out FName parentModulePath);
 
